@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import work.wanghao.jni4ffmpeg.LibavHelper;
 import work.wanghao.jni4ffmpeg.Native4FFmpegHelper;
 
@@ -12,14 +13,15 @@ public class MainActivity extends AppCompatActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    //new AsyncTask<Void, Void, Void>() {
-    //  @Override protected Void doInBackground(Void... params) {
-    //    LibavHelper.exec(new String[] { "ffmpeg" });
-    //    return null;
-    //  }
-    //}.execute();
+   findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+     @Override public void onClick(View view) {
+       ffun();
+     }
+   });
 
-    //LibavHelper.exec(new String[]{"",""});
+  }
+
+  public void ffun() {
     String base = Environment.getExternalStorageDirectory().getPath();
     String[] commands = new String[9];
     commands[0] = "ffmpeg";
@@ -32,6 +34,6 @@ public class MainActivity extends AppCompatActivity {
     commands[7] = "-y";
     commands[8] = base + "/merge.mp4";
 
-    new Native4FFmpegHelper().run(commands.length, commands);
+     Native4FFmpegHelper.run(commands.length, commands);
   }
 }
