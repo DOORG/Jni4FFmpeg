@@ -17,5 +17,5 @@ public class LibavHelper {
    * @param commands run cmd
    * @return execute status
    */
-  public native static int exec(String[] commands);
+  public native static int run(String[] commands);
 }

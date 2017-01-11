@@ -125,13 +125,12 @@ void register_exit(void (*cb)(int ret))
     program_exit = cb;
 }
 
-int exit_program(int ret)
+void exit_program(int ret)
 {
-    return ret;
     if (program_exit)
         program_exit(ret);
 
-    exit(ret);
+   // exit(ret);
 }
 
 double parse_number_or_die(const char *context, const char *numstr, int type,
