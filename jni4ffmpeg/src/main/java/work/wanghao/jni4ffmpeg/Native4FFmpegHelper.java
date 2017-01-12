@@ -25,4 +25,6 @@ public class Native4FFmpegHelper {
   }
 
   public static native int run(int argc, String[] args);
+
+  public static native String getAvCodec();
 }
