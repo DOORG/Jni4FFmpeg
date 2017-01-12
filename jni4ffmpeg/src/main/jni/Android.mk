@@ -1,7 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_MODULE := ffmpeg
-LOCAL_SRC_FILES :=libbuild/libffmpeg.so
+LOCAL_SRC_FILES :=libbuild/armeabi_v7a/libffmpeg.so
 include $(PREBUILT_SHARED_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_MODULE := jni4ffmpeg

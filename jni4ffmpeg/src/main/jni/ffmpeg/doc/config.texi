@@ -352,7 +352,7 @@
 @c @set have-vaapi-x11 no
 @c @set have-vdpau-x11 no
 @c @set have-xlib no
-@set config-bsfs yes
+@c @set config-bsfs no
 @set config-decoders yes
 @set config-demuxers yes
 @set config-encoders yes
@@ -591,10 +591,10 @@
 @set config-vp8dsp yes
 @set config-wma-freqs yes
 @set config-wmv2dsp yes
-@set config-aac-adtstoasc-bsf yes
+@c @set config-aac-adtstoasc-bsf no
 @c @set config-chomp-bsf no
 @c @set config-dump-extradata-bsf no
-@set config-h264-mp4toannexb-bsf yes
+@c @set config-h264-mp4toannexb-bsf no
 @c @set config-hevc-mp4toannexb-bsf no
 @c @set config-imx-dump-header-bsf no
 @c @set config-mjpeg2jpeg-bsf no
@@ -1940,7 +1940,7 @@
 @c @set config-data-protocol no
 @c @set config-ffrtmpcrypt-protocol no
 @c @set config-ffrtmphttp-protocol no
-@set config-file-protocol yes
+@c @set config-file-protocol no
 @c @set config-ftp-protocol no
 @c @set config-gopher-protocol no
 @c @set config-hls-protocol no
@@ -1952,7 +1952,7 @@
 @c @set config-mmst-protocol no
 @c @set config-md5-protocol no
 @c @set config-pipe-protocol no
-@set config-rtmp-protocol yes
+@c @set config-rtmp-protocol no
 @c @set config-rtmpe-protocol no
 @c @set config-rtmps-protocol no
 @c @set config-rtmpt-protocol no
