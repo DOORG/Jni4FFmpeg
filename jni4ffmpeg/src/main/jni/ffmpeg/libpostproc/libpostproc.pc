@@ -1,4 +1,4 @@
-prefix=../liboutput
+prefix=../libbuild
 exec_prefix=${prefix}
 libdir=${prefix}/lib
 includedir=${prefix}/include
