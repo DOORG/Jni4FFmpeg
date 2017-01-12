@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 sh build_x264_arm.sh
-echo build H264 Completed!
+
 export NDK=~/Library/Android/sdk/ndk-bundle
 export TOOLCHAIN=${NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
 export PLATFORM=${NDK}/platforms/android-14/arch-arm
@@ -9,7 +9,7 @@ export PREFIX=../libbuild/armeabi_v7a #编译结果的目录 最终生成的编�
 
 EXTRA_DIR=libx264/armeabi
 # 加入x264编译库
-EXTRA_CFLAGS="-I./${EXTRA_DIR}/include "
+EXTRA_CFLAGS="-I./${EXTRA_DIR}/include"
 EXTRA_LDFLAGS="-L./${EXTRA_DIR}/lib"
 
 
@@ -19,9 +19,9 @@ EXTRA_LDFLAGS="-L./${EXTRA_DIR}/lib"
     --enable-cross-compile \
     --enable-runtime-cpudetect \
     --arch=arm \
+    --extra-cflags="-I$PLATFORM/usr/include" \
     --cc=${TOOLCHAIN}/bin/arm-linux-androideabi-gcc \
     --cross-prefix=${TOOLCHAIN}/bin/arm-linux-androideabi- \
-    --disable-stripping \
     --nm=${TOOLCHAIN}/bin/arm-linux-androideabi-nm \
     --sysroot=${PLATFORM} \
     --enable-gpl \
@@ -57,19 +57,24 @@ EXTRA_LDFLAGS="-L./${EXTRA_DIR}/lib"
     --disable-shared \
     --disable-asm \
     --disable-doc \
+    --disable-protocols \
+    --disable-bsfs \
+    --disable-vda \
+    --disable-iconv \
+    --disable-indevs \
+    --disable-outdevs \
     --disable-ffprobe \
     --disable-ffplay \
     --disable-ffmpeg \
     --disable-ffserver \
-      --disable-postproc \
-    --disable-avdevice \
+    --disable-debug \
+    --disable-stripping \
     --extra-cflags=${EXTRA_CFLAGS} \
-    --extra-cflags="-I$PLATFORM/usr/include" \
     --extra-ldflags=${EXTRA_LDFLAGS}
 
 
 make clean
-make -j8
+make -j4
 make install
 
 ${TOOLCHAIN}/bin/arm-linux-androideabi-ld -rpath-link=${PLATFORM}/usr/lib -L${PLATFORM}/usr/lib \
@@ -82,5 +87,6 @@ ${TOOLCHAIN}/bin/arm-linux-androideabi-ld -rpath-link=${PLATFORM}/usr/lib -L${PL
     libavformat/libavformat.a \
     libavutil/libavutil.a \
     libswscale/libswscale.a \
-
+    libpostproc/libpostproc.a \
+    libavdevice/libavdevice.a \
     -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker ${TOOLCHAIN}/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a

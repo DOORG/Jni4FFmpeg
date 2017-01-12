@@ -352,15 +352,15 @@
 @c @set have-vaapi-x11 no
 @c @set have-vdpau-x11 no
 @c @set have-xlib no
-@set config-bsfs yes
+@c @set config-bsfs no
 @set config-decoders yes
 @set config-demuxers yes
 @set config-encoders yes
 @set config-filters yes
 @c @set config-hwaccels no
-@set config-indevs yes
+@c @set config-indevs no
 @set config-muxers yes
-@set config-outdevs yes
+@c @set config-outdevs no
 @set config-parsers yes
 @set config-protocols yes
 @c @set config-doc no
@@ -486,12 +486,12 @@
 @c @set config-nonfree no
 @set config-version3 yes
 @set config-avcodec yes
-@c @set config-avdevice no
+@set config-avdevice yes
 @set config-avfilter yes
 @set config-avformat yes
 @c @set config-avresample no
 @set config-avutil yes
-@c @set config-postproc no
+@set config-postproc yes
 @set config-swresample yes
 @set config-swscale yes
 @c @set config-ffplay no
@@ -591,20 +591,20 @@
 @set config-vp8dsp yes
 @set config-wma-freqs yes
 @set config-wmv2dsp yes
-@set config-aac-adtstoasc-bsf yes
-@set config-chomp-bsf yes
-@set config-dump-extradata-bsf yes
-@set config-h264-mp4toannexb-bsf yes
-@set config-hevc-mp4toannexb-bsf yes
-@set config-imx-dump-header-bsf yes
-@set config-mjpeg2jpeg-bsf yes
-@set config-mjpega-dump-header-bsf yes
-@set config-mp3-header-decompress-bsf yes
-@set config-mpeg4-unpack-bframes-bsf yes
-@set config-mov2textsub-bsf yes
-@set config-noise-bsf yes
-@set config-remove-extradata-bsf yes
-@set config-text2movsub-bsf yes
+@c @set config-aac-adtstoasc-bsf no
+@c @set config-chomp-bsf no
+@c @set config-dump-extradata-bsf no
+@c @set config-h264-mp4toannexb-bsf no
+@c @set config-hevc-mp4toannexb-bsf no
+@c @set config-imx-dump-header-bsf no
+@c @set config-mjpeg2jpeg-bsf no
+@c @set config-mjpega-dump-header-bsf no
+@c @set config-mp3-header-decompress-bsf no
+@c @set config-mpeg4-unpack-bframes-bsf no
+@c @set config-mov2textsub-bsf no
+@c @set config-noise-bsf no
+@c @set config-remove-extradata-bsf no
+@c @set config-text2movsub-bsf no
 @set config-aasc-decoder yes
 @set config-aic-decoder yes
 @set config-alias-pix-decoder yes
@@ -1597,7 +1597,7 @@
 @set config-perspective-filter yes
 @set config-phase-filter yes
 @set config-pixdesctest-filter yes
-@c @set config-pp-filter no
+@set config-pp-filter yes
 @set config-pp7-filter yes
 @set config-psnr-filter yes
 @set config-pullup-filter yes
@@ -1723,18 +1723,18 @@
 @c @set config-bktr-indev no
 @c @set config-decklink-indev no
 @c @set config-dshow-indev no
-@set config-dv1394-indev yes
-@set config-fbdev-indev yes
+@c @set config-dv1394-indev no
+@c @set config-fbdev-indev no
 @c @set config-gdigrab-indev no
 @c @set config-iec61883-indev no
 @c @set config-jack-indev no
-@set config-lavfi-indev yes
+@c @set config-lavfi-indev no
 @c @set config-openal-indev no
 @c @set config-oss-indev no
 @c @set config-pulse-indev no
 @c @set config-qtkit-indev no
 @c @set config-sndio-indev no
-@set config-v4l2-indev yes
+@c @set config-v4l2-indev no
 @c @set config-vfwcap-indev no
 @c @set config-x11grab-indev no
 @c @set config-x11grab-xcb-indev no
@@ -1887,13 +1887,13 @@
 @c @set config-alsa-outdev no
 @c @set config-caca-outdev no
 @c @set config-decklink-outdev no
-@set config-fbdev-outdev yes
+@c @set config-fbdev-outdev no
 @c @set config-opengl-outdev no
 @c @set config-oss-outdev no
 @c @set config-pulse-outdev no
 @c @set config-sdl-outdev no
 @c @set config-sndio-outdev no
-@set config-v4l2-outdev yes
+@c @set config-v4l2-outdev no
 @c @set config-xv-outdev no
 @set config-aac-parser yes
 @set config-aac-latm-parser yes
@@ -1932,43 +1932,43 @@
 @set config-vp3-parser yes
 @set config-vp8-parser yes
 @set config-vp9-parser yes
-@set config-async-protocol yes
+@c @set config-async-protocol no
 @c @set config-bluray-protocol no
-@set config-cache-protocol yes
-@set config-concat-protocol yes
-@set config-crypto-protocol yes
-@set config-data-protocol yes
+@c @set config-cache-protocol no
+@c @set config-concat-protocol no
+@c @set config-crypto-protocol no
+@c @set config-data-protocol no
 @c @set config-ffrtmpcrypt-protocol no
-@set config-ffrtmphttp-protocol yes
-@set config-file-protocol yes
-@set config-ftp-protocol yes
-@set config-gopher-protocol yes
-@set config-hls-protocol yes
+@c @set config-ffrtmphttp-protocol no
+@c @set config-file-protocol no
+@c @set config-ftp-protocol no
+@c @set config-gopher-protocol no
+@c @set config-hls-protocol no
 @set config-http-protocol yes
-@set config-httpproxy-protocol yes
+@c @set config-httpproxy-protocol no
 @c @set config-https-protocol no
-@set config-icecast-protocol yes
-@set config-mmsh-protocol yes
-@set config-mmst-protocol yes
-@set config-md5-protocol yes
-@set config-pipe-protocol yes
-@set config-rtmp-protocol yes
+@c @set config-icecast-protocol no
+@c @set config-mmsh-protocol no
+@c @set config-mmst-protocol no
+@c @set config-md5-protocol no
+@c @set config-pipe-protocol no
+@c @set config-rtmp-protocol no
 @c @set config-rtmpe-protocol no
 @c @set config-rtmps-protocol no
-@set config-rtmpt-protocol yes
+@c @set config-rtmpt-protocol no
 @c @set config-rtmpte-protocol no
 @c @set config-rtmpts-protocol no
 @set config-rtp-protocol yes
 @c @set config-sctp-protocol no
-@set config-srtp-protocol yes
-@set config-subfile-protocol yes
+@c @set config-srtp-protocol no
+@c @set config-subfile-protocol no
 @set config-tcp-protocol yes
 @c @set config-tls-securetransport-protocol no
 @c @set config-tls-gnutls-protocol no
 @c @set config-tls-openssl-protocol no
 @set config-udp-protocol yes
-@set config-udplite-protocol yes
-@set config-unix-protocol yes
+@c @set config-udplite-protocol no
+@c @set config-unix-protocol no
 @c @set config-librtmp-protocol no
 @c @set config-librtmpe-protocol no
 @c @set config-librtmps-protocol no
