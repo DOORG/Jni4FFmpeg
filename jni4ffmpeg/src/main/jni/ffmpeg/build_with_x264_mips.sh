@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-sh build_x264.sh
+sh build_x264_mips.sh
 
 export NDK=~/Library/Android/sdk/ndk-bundle
-export TOOLCHAIN=${NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
-export PLATFORM=${NDK}/platforms/android-14/arch-arm
+export TOOLCHAIN=${NDK}/toolchains/mipsel-linux-android-4.9/prebuilt/darwin-x86_64
+export PLATFORM=${NDK}/platforms/android-14/arch-mips
 export SYSROOT=${TOOLCHAIN}/sysroot/
-export PREFIX=../libbuild #编译结果的目录 最终生成的编译结果
+export PREFIX=../libbuild/mips #编译结果的目录 最终生成的编译结果
 
 # 加入x264编译库
-EXTRA_CFLAGS="-I./libx264/include"
-EXTRA_LDFLAGS="-L./libx264/lib"
+EXTRA_CFLAGS="-I./libx264/mips/include"
+EXTRA_LDFLAGS="-L./libx264/mips/lib"
 
 
 ./configure \
@@ -18,10 +18,10 @@ EXTRA_LDFLAGS="-L./libx264/lib"
     --enable-cross-compile \
     --enable-runtime-cpudetect \
     --arch=arm \
-    --cc=${TOOLCHAIN}/bin/arm-linux-androideabi-gcc \
-    --cross-prefix=${TOOLCHAIN}/bin/arm-linux-androideabi- \
+    --cc=${TOOLCHAIN}/bin/mipsel-linux-android-gcc \
+    --cross-prefix=${TOOLCHAIN}/bin/mipsel-linux-android- \
     --disable-stripping \
-    --nm=${TOOLCHAIN}/bin/arm-linux-androideabi-nm \
+    --nm=${TOOLCHAIN}/bin/mipsel-linux-android-nm \
     --sysroot=${PLATFORM} \
     --enable-gpl \
     --enable-version3 \
@@ -75,7 +75,7 @@ make clean
 make -j8
 make install
 
-${TOOLCHAIN}/bin/arm-linux-androideabi-ld -rpath-link=${PLATFORM}/usr/lib -L${PLATFORM}/usr/lib \
+${TOOLCHAIN}/bin/mipsel-linux-android-ld -rpath-link=${PLATFORM}/usr/lib -L${PLATFORM}/usr/lib \
 -L${PREFIX}/lib -soname libffmpeg.so -shared \
 -nostdlib -Bsymbolic --whole-archive --no-undefined -o ${PREFIX}/libffmpeg.so \
     libx264/lib/libx264.a \
@@ -87,4 +87,4 @@ ${TOOLCHAIN}/bin/arm-linux-androideabi-ld -rpath-link=${PLATFORM}/usr/lib -L${PL
     libswscale/libswscale.a \
     libpostproc/libpostproc.a \
     libavdevice/libavdevice.a \
-    -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker ${TOOLCHAIN}/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
+    -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker ${TOOLCHAIN}/lib/gcc/mipsel-linux-android/4.9.x/libgcc.a

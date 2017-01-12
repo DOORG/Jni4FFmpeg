@@ -1,5 +1,5 @@
 SRCPATH=.
-prefix=../libx264
+prefix=../libx264/armeabi
 exec_prefix=${prefix}
 bindir=${exec_prefix}/bin
 libdir=${exec_prefix}/lib

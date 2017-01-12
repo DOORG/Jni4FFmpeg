@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-sh build_x264.sh
+sh build_x264_arm.sh
 
 export NDK=~/Library/Android/sdk/ndk-bundle
 export TOOLCHAIN=${NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
 export PLATFORM=${NDK}/platforms/android-14/arch-arm
 export SYSROOT=${TOOLCHAIN}/sysroot/
-export PREFIX=../libbuild #编译结果的目录 最终生成的编译结果
+export PREFIX=../libbuild/armeabi #编译结果的目录 最终生成的编译结果
 
+EXTRA_DIR=libx264/armeabi
 # 加入x264编译库
-EXTRA_CFLAGS="-I./libx264/include"
-EXTRA_LDFLAGS="-L./libx264/lib"
+EXTRA_CFLAGS="-I./${EXTRA_DIR}/include"
+EXTRA_LDFLAGS="-L./${EXTRA_DIR}/lib"
 
 
 ./configure \
@@ -18,6 +19,7 @@ EXTRA_LDFLAGS="-L./libx264/lib"
     --enable-cross-compile \
     --enable-runtime-cpudetect \
     --arch=arm \
+    --extra-libs="-lgcc" \
     --cc=${TOOLCHAIN}/bin/arm-linux-androideabi-gcc \
     --cross-prefix=${TOOLCHAIN}/bin/arm-linux-androideabi- \
     --disable-stripping \
@@ -78,7 +80,7 @@ make install
 ${TOOLCHAIN}/bin/arm-linux-androideabi-ld -rpath-link=${PLATFORM}/usr/lib -L${PLATFORM}/usr/lib \
 -L${PREFIX}/lib -soname libffmpeg.so -shared \
 -nostdlib -Bsymbolic --whole-archive --no-undefined -o ${PREFIX}/libffmpeg.so \
-    libx264/lib/libx264.a \
+    ${EXTRA_DIR}/lib/libx264.a \
     libavcodec/libavcodec.a \
     libavfilter/libavfilter.a \
     libswresample/libswresample.a \

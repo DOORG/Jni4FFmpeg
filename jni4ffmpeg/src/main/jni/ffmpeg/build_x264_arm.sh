@@ -4,7 +4,7 @@ cd ./x264
  NDK=~/Library/Android/sdk/ndk-bundle
  TOOLCHAIN=${NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
  PLATFORM=${NDK}/platforms/android-14/arch-arm
- PREFIX=../libx264
+ PREFIX=../libx264/armeabi
 
 
 ./configure \

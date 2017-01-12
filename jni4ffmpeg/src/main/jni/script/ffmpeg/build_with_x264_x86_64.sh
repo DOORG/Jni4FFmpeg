@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-sh build_x264.sh
+sh build_x264_x86_64.sh
 
 export NDK=~/Library/Android/sdk/ndk-bundle
-export TOOLCHAIN=${NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
-export PLATFORM=${NDK}/platforms/android-14/arch-arm
+export TOOLCHAIN=${NDK}/toolchains/x86_64-4.9/prebuilt/darwin-x86_64
+export PLATFORM=${NDK}/platforms/android-21/arch-x86_64
 export SYSROOT=${TOOLCHAIN}/sysroot/
-export PREFIX=../libbuild #编译结果的目录 最终生成的编译结果
+export PREFIX=../libbuild/x86_64 #编译结果的目录 最终生成的编译结果
 
+EXTRA_DIR=libx264/x86_64
 # 加入x264编译库
-EXTRA_CFLAGS="-I./libx264/include"
-EXTRA_LDFLAGS="-L./libx264/lib"
+EXTRA_CFLAGS="-I./${EXTRA_DIR}/include"
+EXTRA_LDFLAGS="-L./${EXTRA_DIR}/lib"
 
 
 ./configure \
@@ -17,11 +18,12 @@ EXTRA_LDFLAGS="-L./libx264/lib"
     --prefix=${PREFIX} \
     --enable-cross-compile \
     --enable-runtime-cpudetect \
-    --arch=arm \
-    --cc=${TOOLCHAIN}/bin/arm-linux-androideabi-gcc \
-    --cross-prefix=${TOOLCHAIN}/bin/arm-linux-androideabi- \
+    --arch=x86_64 \
+    --extra-libs="-lgcc" \
+    --cc=${TOOLCHAIN}/bin/x86_64-linux-android-gcc \
+    --cross-prefix=${TOOLCHAIN}/bin/x86_64-linux-android- \
     --disable-stripping \
-    --nm=${TOOLCHAIN}/bin/arm-linux-androideabi-nm \
+    --nm=${TOOLCHAIN}/bin/x86_64-linux-android-nm \
     --sysroot=${PLATFORM} \
     --enable-gpl \
     --enable-version3 \
@@ -75,10 +77,10 @@ make clean
 make -j8
 make install
 
-${TOOLCHAIN}/bin/arm-linux-androideabi-ld -rpath-link=${PLATFORM}/usr/lib -L${PLATFORM}/usr/lib \
+${TOOLCHAIN}/bin/x86_64-linux-android-ld -rpath-link=${PLATFORM}/usr/lib -L${PLATFORM}/usr/lib \
 -L${PREFIX}/lib -soname libffmpeg.so -shared \
 -nostdlib -Bsymbolic --whole-archive --no-undefined -o ${PREFIX}/libffmpeg.so \
-    libx264/lib/libx264.a \
+    ${EXTRA_DIR}/lib/libx264.a \
     libavcodec/libavcodec.a \
     libavfilter/libavfilter.a \
     libswresample/libswresample.a \
@@ -87,4 +89,4 @@ ${TOOLCHAIN}/bin/arm-linux-androideabi-ld -rpath-link=${PLATFORM}/usr/lib -L${PL
     libswscale/libswscale.a \
     libpostproc/libpostproc.a \
     libavdevice/libavdevice.a \
-    -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker ${TOOLCHAIN}/lib/gcc/arm-linux-androideabi/4.9.x/libgcc.a
+    -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker ${TOOLCHAIN}/lib/gcc/x86_64-linux-android/4.9.x/libgcc.a

@@ -2,9 +2,9 @@
 cd ./x264
 
  NDK=~/Library/Android/sdk/ndk-bundle
- TOOLCHAIN=${NDK}/toolchains/arm-linux-androideabi-4.9/prebuilt/darwin-x86_64
- PLATFORM=${NDK}/platforms/android-14/arch-arm
- PREFIX=../libx264
+ TOOLCHAIN=${NDK}/toolchains/mipsel-linux-android-4.9/prebuilt/darwin-x86_64
+ PLATFORM=${NDK}/platforms/android-14/arch-mips
+ PREFIX=../libx264/mips
 
 
 ./configure \
@@ -15,7 +15,7 @@ cd ./x264
     --disable-asm \
     --disable-cli \
     --host=arm-linux \
-    --cross-prefix=${TOOLCHAIN}/bin/arm-linux-androideabi- \
+    --cross-prefix=${TOOLCHAIN}/bin/mipsel-linux-android- \
     --sysroot=${PLATFORM}
 
 make clean
