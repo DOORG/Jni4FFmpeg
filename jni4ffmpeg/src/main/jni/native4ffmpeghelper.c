@@ -1,8 +1,7 @@
 #include "native4ffmpeghelper.h"
-#include "Android_log.h"
 #include "ffmpeg.h"
-#include <stdlib.h>
-#include <stdbool.h>
+# include "check_env.h"
+
 
 JNIEXPORT jint JNICALL Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_run
         (JNIEnv *env, jobject obj, jint argc, jobjectArray args) {
@@ -48,11 +47,17 @@ Java_work_wanghao_jni4ffmpeg_LibavHelper_run(JNIEnv *env, jclass type, jobjectAr
 
 }
 
+
 JNIEXPORT jstring JNICALL
 Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getAvCodec(JNIEnv *env, jclass type) {
 
-    // TODO
+    LOGE("time=%ld", get_current_time());
+    check_env_status();
     char info[10000] = {0};
     sprintf(info, "%s\n", avcodec_configuration());
     return (*env)->NewStringUTF(env, info);
 }
+
+
+
+

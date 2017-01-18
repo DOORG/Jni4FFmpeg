@@ -18,4 +18,9 @@ public class LibavHelper {
    * @return execute status
    */
   public native static int run(String[] commands);
+
+  public static long currentTime() {
+    return System.currentTimeMillis();
+  }
+
 }

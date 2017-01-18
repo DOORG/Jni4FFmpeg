@@ -57,7 +57,7 @@
 #if CONFIG_NETWORK
 
 #include "libavformat/network.h"
-#include "Android_log.h"
+#include "android_log.h"
 
 #endif
 #if HAVE_SYS_RESOURCE_H
