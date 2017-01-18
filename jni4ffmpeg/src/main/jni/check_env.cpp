@@ -53,6 +53,9 @@ void call_convert_date(JNIEnv *env) {
                                                  get_current_time());
     if (result == NULL) {
         LOGE("call the method return NULL");
+        env->DeleteLocalRef(native_lib_class);
+        env->DeleteLocalRef(result);
+        return;
     }
 
     jboolean is_copy;
