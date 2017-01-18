@@ -21,7 +21,6 @@ JNIEXPORT jint JNICALL Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_run
 
     }
 
-    LOGD("Execute commands: %s", *argv);
     int result = run(argc, argv);
     if (result == 0) {
         LOGI("Execute success.");
@@ -50,7 +49,6 @@ Java_work_wanghao_jni4ffmpeg_LibavHelper_run(JNIEnv *env, jclass type, jobjectAr
 
 JNIEXPORT jstring JNICALL
 Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getAvCodec(JNIEnv *env, jclass type) {
-
     LOGE("time=%ld", get_current_time());
     check_env_status();
     char info[10000] = {0};
@@ -59,5 +57,9 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getAvCodec(JNIEnv *env, jclass 
 }
 
 
+JNIEXPORT void JNICALL
+Java_work_wanghao_jni4ffmpeg_LibavHelper_test(JNIEnv *env, jclass type) {
 
+    call_convert_date(env);
 
+}

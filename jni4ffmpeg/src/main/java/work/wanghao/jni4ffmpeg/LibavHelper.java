@@ -1,5 +1,10 @@
 package work.wanghao.jni4ffmpeg;
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * @author doublemine
  *         Created  on 2017/01/10 21:21.
@@ -7,6 +12,7 @@ package work.wanghao.jni4ffmpeg;
  */
 
 public class LibavHelper {
+  private final static String TAG = LibavHelper.class.getSimpleName();
 
   static {
     System.loadLibrary("ffmpeg");
@@ -23,4 +29,12 @@ public class LibavHelper {
     return System.currentTimeMillis();
   }
 
+  public static String convert2String(long time) {
+    @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat =
+        new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    Log.d(TAG, "time=" + time);
+    return simpleDateFormat.format(new Date(time));
+  }
+
+  public static native void test();
 }

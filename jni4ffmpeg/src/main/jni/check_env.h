@@ -27,7 +27,7 @@ long get_end_time_point();
 
 void check_env_status();
 
-
+void call_convert_date(JNIEnv *env);
 #ifdef __cplusplus
 }
 #endif
