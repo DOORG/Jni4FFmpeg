@@ -148,3 +148,9 @@ gradle.properties
 *.pc
 .idea/misc.xml
 
+jni4ffmpeg/src/main/jni/ffmpeg/libx264/armeabi/lib/
+jni4ffmpeg/src/main/jni/ffmpeg/libx264/armeabi_v8a/
+jni4ffmpeg/src/main/jni/ffmpeg/libx264/mips/
+jni4ffmpeg/src/main/jni/libbuild/
+jni4ffmpeg/src/main/libs/
+jni4ffmpeg/src/main/obj/
