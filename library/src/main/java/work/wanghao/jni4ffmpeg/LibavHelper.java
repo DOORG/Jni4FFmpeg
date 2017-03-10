@@ -23,7 +23,6 @@ public class LibavHelper {
    * @param commands run cmd
    * @return execute status
    */
-  public native static int run(String[] commands);
 
   public static long currentTime() {
     return System.currentTimeMillis();
@@ -35,6 +34,4 @@ public class LibavHelper {
     Log.d(TAG, "time=" + time);
     return simpleDateFormat.format(new Date(time));
   }
-
-  public static native void test();
 }
