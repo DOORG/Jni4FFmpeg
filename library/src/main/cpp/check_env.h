@@ -9,7 +9,7 @@
 #include <jni.h>
 #include <sys/system_properties.h>
 #include <sys/time.h>
-#include "android_log.h"
+#include "android-log.h"
 #include <time.h>
 #include "stdlib.h"
 #include <stdbool.h>

@@ -47,7 +47,7 @@
 #include "libavutil/threadmessage.h"
 
 #include "libswresample/swresample.h"
-#include "android_log.h"
+#include "android-log.h"
 
 #define VSYNC_AUTO       -1
 #define VSYNC_PASSTHROUGH 0

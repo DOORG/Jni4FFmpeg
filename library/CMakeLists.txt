@@ -21,10 +21,12 @@ add_library(native-lib SHARED
             ${CMAKE_SOURCE_DIR}/src/main/cpp/cmdutils.h
             ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg.c
             ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg.h
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_opt.c
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_filter.c
             )
 
 target_include_directories(native-lib PRIVATE
-                           ${dist_DIR}/include)
+                             ${CMAKE_SOURCE_DIR}/../source/ffmpeg)
 
 target_link_libraries(native-lib
                       android

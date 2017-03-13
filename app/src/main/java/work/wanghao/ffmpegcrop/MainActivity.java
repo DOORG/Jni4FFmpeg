@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
         ffun();
       }
     });
-
-    LibavHelper.test();
   }
 
   public void ffun() {
