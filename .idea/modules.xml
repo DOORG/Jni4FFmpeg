@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/AndroidFFMPEG.iml" filepath="$PROJECT_DIR$/AndroidFFMPEG.iml" />
       <module fileurl="file://$PROJECT_DIR$/Jni4FFmpeg.iml" filepath="$PROJECT_DIR$/Jni4FFmpeg.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jni4ffmpeg/jni4ffmpeg.iml" filepath="$PROJECT_DIR$/jni4ffmpeg/jni4ffmpeg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
     </modules>
   </component>
