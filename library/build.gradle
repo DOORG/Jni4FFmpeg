@@ -28,12 +28,12 @@ android {
     }
   }
 
-  //  ourceSets {
-  //    main {
-  //      // let gradle pack the shared library into apk
-  //      jniLibs.srcDirs = ['../dist']
-  //    }
-  //  }
+    sourceSets {
+      main {
+        // let gradle pack the shared library into apk
+        jniLibs.srcDirs = ['../dist']
+      }
+    }
 
   buildTypes {
     release {
