@@ -1,12 +1,10 @@
 package work.wanghao.ffmpegcrop;
 
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import work.wanghao.jni4ffmpeg.LibavHelper;
 import work.wanghao.jni4ffmpeg.Native4FFmpegHelper;
 
 public class MainActivity extends AppCompatActivity {
