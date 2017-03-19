@@ -124,7 +124,6 @@ fabric.properties
 *.pch
 
 # Compiled Dynamic libraries
-*.so
 *.dylib
 *.dll
 
@@ -154,3 +153,4 @@ jni4ffmpeg/src/main/jni/ffmpeg/libx264/mips/
 jni4ffmpeg/src/main/jni/libbuild/
 jni4ffmpeg/src/main/libs/
 jni4ffmpeg/src/main/obj/
+.idea/
