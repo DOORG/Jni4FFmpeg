@@ -10,7 +10,7 @@ import android.util.Log;
 public class Native4FFmpegHelper {
   static {
     System.loadLibrary("ffmpeg");
-    System.loadLibrary("jni4ffmpeg");
+    System.loadLibrary("native-lib");
   }
 
   public static int ffmpegRunCommand(String command) {
