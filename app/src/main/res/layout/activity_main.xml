@@ -12,7 +12,7 @@
     tools:context="work.wanghao.ffmpegcrop.MainActivity"
     >
 
-  <TextView
+  <ImageView
       android:id="@+id/tv_codec"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

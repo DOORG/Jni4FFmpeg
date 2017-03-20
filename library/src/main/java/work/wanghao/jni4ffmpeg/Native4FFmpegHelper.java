@@ -10,6 +10,9 @@ import android.util.Log;
  *         Summary:
  */
 public class Native4FFmpegHelper {
+
+  protected int flag;
+
   static {
     System.loadLibrary("ffmpeg");
     System.loadLibrary("native-lib");
@@ -38,4 +41,8 @@ public class Native4FFmpegHelper {
   public static native void drawFrame(Bitmap bitmap);
 
   public static native void drawFrameAt(Bitmap bitmap, int secs);
+
+  public static native void updateBitmap(Bitmap bitmap);
+
+
 }
