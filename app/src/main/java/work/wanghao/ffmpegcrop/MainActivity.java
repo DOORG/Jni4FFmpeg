@@ -1,10 +1,15 @@
 package work.wanghao.ffmpegcrop;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import java.io.File;
 import work.wanghao.jni4ffmpeg.Native4FFmpegHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,18 +27,22 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void ffun() {
-    String base = Environment.getExternalStorageDirectory().getPath();
-    String[] commands = new String[9];
-    commands[0] = "ffmpeg";
-    commands[1] = "-i";
-    commands[2] = base + "/input.mp4";
-    commands[3] = "-i";
-    commands[4] = base + "/input.mp3";
-    commands[5] = "-strict";
-    commands[6] = "-2";
-    commands[7] = "-y";
-    commands[8] = base + "/merge.mp4";
 
-    Native4FFmpegHelper.run(commands.length, commands);
+    MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+    mediaMetadataRetriever.setDataSource(
+        new File(Environment.getExternalStorageDirectory(), "test.mp4").getAbsolutePath());
+    Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime();
+    mediaMetadataRetriever.release();
+
+    Native4FFmpegHelper.openFile(
+        new File(Environment.getExternalStorageDirectory(), "test.mp4").getAbsolutePath());
+
+    Log.d("TAG", "bitmap=" + bitmap.getWidth() + "--" + bitmap.getHeight());
+    //BitmapFactory.Options config = new BitmapFactory.Options();
+    //config.inJustDecodeBounds = true;
+
+    //Native4FFmpegHelper.getBitmap(
+    //    new File(Environment.getExternalStorageDirectory(), "test.mp4").getAbsolutePath(),
+    //    Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "test.png");
   }
 }

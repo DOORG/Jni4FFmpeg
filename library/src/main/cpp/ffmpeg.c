@@ -1746,7 +1746,7 @@ static void flush_encoders(void) {
             enc->codec->id == AV_CODEC_ID_RAWVIDEO)
             continue;
 
-        for (; ;) {
+        for (;;) {
             int (*encode)(AVCodecContext *, AVPacket *, const AVFrame *, int *) = NULL;
             const char *desc;
 
@@ -2858,9 +2858,10 @@ static int transcode_init(void) {
                 if (st != ost->st && st->codec->codec_type == enc_ctx->codec_type)
                     break;
             }
-            if (j == oc->nb_streams) if (enc_ctx->codec_type == AVMEDIA_TYPE_AUDIO ||
-                                         enc_ctx->codec_type == AVMEDIA_TYPE_VIDEO)
-                ost->st->disposition = AV_DISPOSITION_DEFAULT;
+            if (j == oc->nb_streams)
+                if (enc_ctx->codec_type == AVMEDIA_TYPE_AUDIO ||
+                    enc_ctx->codec_type == AVMEDIA_TYPE_VIDEO)
+                    ost->st->disposition = AV_DISPOSITION_DEFAULT;
         }
 
         if (ost->stream_copy) {
@@ -3019,8 +3020,7 @@ static int transcode_init(void) {
                                          (AVRational) {enc_ctx->height, enc_ctx->width});
                         av_log(NULL, AV_LOG_WARNING, "Overriding aspect ratio "
                                 "with stream copy may produce invalid files\n");
-                    }
-                    else if (ist->st->sample_aspect_ratio.num)
+                    } else if (ist->st->sample_aspect_ratio.num)
                         sar = ist->st->sample_aspect_ratio;
                     else
                         sar = dec_ctx->sample_aspect_ratio;
@@ -4025,8 +4025,9 @@ static int transcode(void) {
         int64_t cur_time = av_gettime_relative();
 
         /* if 'q' pressed, exits */
-        if (stdin_interaction) if (check_keyboard_interaction(cur_time) < 0)
-            break;
+        if (stdin_interaction)
+            if (check_keyboard_interaction(cur_time) < 0)
+                break;
 
         /* check if there's any stream where output is still needed */
         if (!need_output()) {
@@ -4161,6 +4162,8 @@ static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl)
 }
 
 int run(int argc, char **argv) {
+
+    LOGD("运行到此处%d", argc);
     int ret;
     int64_t ti;
 

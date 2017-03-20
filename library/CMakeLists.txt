@@ -12,7 +12,7 @@ set_target_properties(lib-ffmpeg PROPERTIES IMPORTED_LOCATION
     ${dist_DIR}/${ANDROID_ABI}/libffmpeg.so)
 
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -Wno-error=format-security")
 
 add_library(native-lib SHARED
             ${CMAKE_SOURCE_DIR}/src/main/cpp/native-lib.cpp
@@ -32,7 +32,9 @@ target_include_directories(native-lib PRIVATE
 
 target_link_libraries(native-lib
                       android
+                      jnigraphics
                       lib-ffmpeg
+                      m
                       z
                       dl
                       log)

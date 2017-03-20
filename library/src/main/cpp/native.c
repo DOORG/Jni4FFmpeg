@@ -1,19 +1,40 @@
-#include <string>
+/*
+ * Copyright 2011 - Churn Labs, LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/*
+ * This is mostly based off of the FFMPEG tutorial:
+ * http://dranger.com/ffmpeg/
+ * With a few updates to support Android output mechanisms and to update
+ * places where the APIs have shifted.
+ */
+
 #include <jni.h>
-#include "android-log.h"
 #include <string.h>
 #include <stdio.h>
+#include <android/log.h>
 #include <android/bitmap.h>
 
-
-
-extern "C"
-{
-#include <libavcodec/avcodec.h>
-#include "ffmpeg.h"
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
+
+#define  LOG_TAG    "FFMPEGSample"
+#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
+
 
 /* Cheat to keep things simple and just use some globals. */
 AVFormatContext *pFormatCtx;
@@ -52,152 +73,7 @@ static void fill_bitmap(AndroidBitmapInfo *info, void *pixels, AVFrame *pFrame) 
     }
 }
 
-
-int seek_frame(int tsms) {
-    int64_t frame;
-
-    frame = av_rescale(tsms, pFormatCtx->streams[videoStream]->time_base.den,
-                       pFormatCtx->streams[videoStream]->time_base.num);
-    frame /= 1000;
-
-    if (avformat_seek_file(pFormatCtx, videoStream, 0, frame, frame, AVSEEK_FLAG_FRAME) < 0) {
-        return 0;
-    }
-
-    avcodec_flush_buffers(pCodecCtx);
-
-    return 1;
-}
-
-
-
-
-
-JNIEXPORT jstring JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_run(JNIEnv *env, jclass type, jint argc,
-                                                     jobjectArray args) {
-
-    char buff[1024];
-    snprintf(buff, sizeof(buff), "ffmpeg -ss 00:00:01 -i %s %s -r 1 -vframes 1 -an -vcodec mjpeg",
-             "Hello", "world");
-    std::string buffAsStdStr = buff;
-
-
-    char tab2[1024];
-    strncpy(tab2, buffAsStdStr.c_str(), sizeof(tab2));
-    tab2[sizeof(tab2) - 1] = 0;
-
-    int resultCode = run(strlen(tab2), (char **) tab2);
-}
-
-JNIEXPORT jstring JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getAvCodec(JNIEnv *env, jclass type) {
-
-//    char buff[1024];
-//    snprintf(buff, sizeof(buff), "ffmpeg -ss 00:00:01 -i %s %s -r 1 -vframes 1 -an -vcodec mjpeg",
-//             "Hello", "world");
-//    std::string buffAsStdStr = buff;
-//
-//
-//    char tab2[1024];
-//    strncpy(tab2, buffAsStdStr.c_str(), sizeof(tab2));
-//    tab2[sizeof(tab2) - 1] = 0;
-//
-//    int resultCode = run(strlen(tab2), (char **) tab2);
-
-    return env->NewStringUTF(avcodec_configuration());
-}
-
-
-JNIEXPORT jint JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getBitmap(JNIEnv *env, jclass type,
-                                                           jstring sourcePath_, jstring savePath_) {
-    const char *sourcePath = env->GetStringUTFChars(sourcePath_, 0);
-    const char *savePath = env->GetStringUTFChars(savePath_, 0);
-    LOGD(sourcePath);
-    LOGD(savePath);
-
-
-//    char const *str1;
-//    int n = 0;
-//    char *argv[20];
-//    jbyte* str[3];
-//    jstringToCstr(env,videoPath,&str[0]);
-//    jstringToCstr(env,audioPath,&str[1]);
-//    jstringToCstr(env,avPath,&str[2]);
-//
-//    argv[n++] = "ffmpeg";
-//    argv[n++] = "-i";
-//    argv[n++] = str[0];
-//    argv[n++] = "-i";
-//    argv[n++] = str[1];
-//    argv[n++] = "-y";
-//    argv[n++] = "-strict";
-//    argv[n++] = "-2";
-//    argv[n++] = str[2];
-//    int ret = vedio_merge(n, argv);
-//    str1 = "Using FFMPEG doing your job";
-//    return (*env)->NewStringUTF(env, str1);
-
-
-    char *argv[30];
-    int argc = 0;
-
-
-    argv[argc++] = (char *) "ffmpeg";
-    argv[argc++] = (char *) "-ss";
-    argv[argc++] = (char *) "00:00:01";
-    argv[argc++] = (char *) "-i";
-    argv[argc++] = (char *) sourcePath;
-    argv[argc++] = (char *) "-f";
-    argv[argc++] = (char *) "image2";
-    argv[argc++] = (char *) "-y";
-    argv[argc++] = (char *) savePath;
-//    argv[argc++] = (char *) savePath;
-//    argv[argc++] = (char *) "-r";
-//    argv[argc++] = (char *) "-1";
-//    argv[argc++] = (char *) "-vframes";
-//    argv[argc++] = (char *) "1";
-//    argv[argc++] = (char *) "-an";
-//    argv[argc++] = (char *) "-vcodec";
-//    argv[argc++] = (char *) "mjpeg";
-//    argv[n++] = str[0];
-//    argv[n++] = "-i";
-//    argv[n++] = str[1];
-//    argv[n++] = "-y";
-//    argv[n++] = "-strict";
-//    argv[n++] = "-2";
-//    argv[n++] = str[2];
-
-//
-//    char buff[1024];
-//    snprintf(buff, sizeof(buff), "ffmpeg -ss 00:00:01 -i %s %s -r 1 -vframes 1 -an -vcodec mjpeg",
-//             sourcePath, savePath);
-//    std::string buffAsStdStr = buff;
-//
-//    LOGD(buffAsStdStr.c_str());
-//
-//    char tab2[1024];
-//    strncpy(tab2, buffAsStdStr.c_str(), sizeof(tab2));
-//    tab2[sizeof(tab2) - 1] = 0;
-
-    int resultCode = run(argc, argv);
-    if (resultCode == 0) {
-        LOGD("返回值为0");
-    } else {
-        LOGE("返回值为非0");
-    }
-
-    env->ReleaseStringUTFChars(sourcePath_, sourcePath);
-    env->ReleaseStringUTFChars(savePath_, savePath);
-}
-
-
-JNIEXPORT void JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_openFile(JNIEnv *env, jclass type, jstring path_) {
-    const char *path = env->GetStringUTFChars(path_, 0);
-
-
+void Java_com_churnlabs_ffmpegsample_MainActivity_openFile(JNIEnv *env, jobject this) {
     int ret;
     int err;
     int i;
@@ -208,7 +84,7 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_openFile(JNIEnv *env, jclass ty
     av_register_all();
     LOGE("Registered formats");
 //    err = av_open_input_file(&pFormatCtx, "file:/sdcard/vid.3gp", NULL, 0, NULL);
-    err = avformat_open_input(&pFormatCtx, path, NULL, NULL);
+    err = avformat_open_input(&pFormatCtx, "file:/sdcard/vid.3gp", NULL, NULL);
     LOGE("Called open file");
     if (err != 0) {
         LOGE("Couldn't open file");
@@ -257,14 +133,10 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_openFile(JNIEnv *env, jclass ty
 
     avpicture_fill((AVPicture *) pFrameRGB, buffer, PIX_FMT_RGB24,
                    pCodecCtx->width, pCodecCtx->height);
-
-    env->ReleaseStringUTFChars(path_, path);
 }
 
-
-JNIEXPORT void JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_drawFrame(JNIEnv *env, jclass type,
-                                                           jobject bitmap) {
+void
+Java_com_churnlabs_ffmpegsample_MainActivity_drawFrame(JNIEnv *env, jobject this, jstring bitmap) {
     AndroidBitmapInfo info;
     void *pixels;
     int ret;
@@ -321,14 +193,28 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_drawFrame(JNIEnv *env, jclass t
     }
 
     AndroidBitmap_unlockPixels(env, bitmap);
-
 }
 
-JNIEXPORT void JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_drawFrameAt(JNIEnv *env, jclass type,
-                                                             jobject bitmap, jint secs) {
 
+int seek_frame(int tsms) {
+    int64_t frame;
 
+    frame = av_rescale(tsms, pFormatCtx->streams[videoStream]->time_base.den,
+                       pFormatCtx->streams[videoStream]->time_base.num);
+    frame /= 1000;
+
+    if (avformat_seek_file(pFormatCtx, videoStream, 0, frame, frame, AVSEEK_FLAG_FRAME) < 0) {
+        return 0;
+    }
+
+    avcodec_flush_buffers(pCodecCtx);
+
+    return 1;
+}
+
+void
+Java_com_churnlabs_ffmpegsample_MainActivity_drawFrameAt(JNIEnv *env, jobject this, jstring bitmap,
+                                                         jint secs) {
     AndroidBitmapInfo info;
     void *pixels;
     int ret;
@@ -386,8 +272,4 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_drawFrameAt(JNIEnv *env, jclass
     }
 
     AndroidBitmap_unlockPixels(env, bitmap);
-
-}
-
-
 }
