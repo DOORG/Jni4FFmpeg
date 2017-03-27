@@ -14,6 +14,12 @@ extern "C"
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libswscale/swscale.h>
+#include <libavutil/opt.h>
+#include <ffmpeg_utils.h>
+
 /* Cheat to keep things simple and just use some globals. */
 AVFormatContext *pFormatCtx;
 AVCodecContext *pCodecCtx;
@@ -188,6 +194,7 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getBitmap(JNIEnv *env, jclass t
   // crop bitmap to non-transparent area and return:
   return Bitmap.createBitmap(sourceBitmap, minX, minY, maxX - minX + 1, maxY - minY + 1)
 }
+
      *
      *
      */
