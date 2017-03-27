@@ -1,16 +1,14 @@
 package work.wanghao.ffmpegcrop;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 import java.io.File;
+import work.wanghao.jni4ffmpeg.MediaMetadataRetriever;
 import work.wanghao.jni4ffmpeg.Native4FFmpegHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
         new File(Environment.getExternalStorageDirectory(), "test.mp4").getAbsolutePath());
     bitmap = mediaMetadataRetriever.getFrameAtTime();
     imageView.setImageBitmap(bitmap);
+    Log.d("TAG", ">-->" + mediaMetadataRetriever.extractMetadata(
+        MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION));
     mediaMetadataRetriever.release();
     findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {

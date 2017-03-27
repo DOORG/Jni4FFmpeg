@@ -26,7 +26,7 @@
 
 #include <android/native_window_jni.h>
 
-// Keep these in synch with the constants defined in FFmpegMediaMetadataRetriever.java
+// Keep these in synch with the constants defined in MediaMetadataRetriever.java
 // class.
 typedef enum {
     OPTION_PREVIOUS_SYNC = 0,

@@ -25,6 +25,18 @@ add_library(native-lib SHARED
             ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_opt.c
             ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_filter.c
             ${CMAKE_SOURCE_DIR}/src/main/cpp/android-log.h
+
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/Errors.h
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_utils.h
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_utils.c
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/mediametadataretriever.cpp
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/mediametadataretriever.h
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/Mutex.h
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/wseemann_media_MediaMetadataRetriever.cpp
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_mediametadataretriever.c
+            ${CMAKE_SOURCE_DIR}/src/main/cpp/ffmpeg_mediametadataretriever.h
+
+
             )
 
 target_include_directories(native-lib PRIVATE

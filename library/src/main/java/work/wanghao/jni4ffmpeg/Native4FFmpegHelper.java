@@ -43,6 +43,4 @@ public class Native4FFmpegHelper {
   public static native void drawFrameAt(Bitmap bitmap, int secs);
 
   public static native void updateBitmap(Bitmap bitmap);
-
-
 }

@@ -20,7 +20,7 @@
 //#define LOG_NDEBUG 0
 #define LOG_TAG "MediaMetadataRetriever"
 
-#include <mediametadataretriever.h>
+#include "mediametadataretriever.h"
 #include "mediametadataretriever.h"
 #include "Mutex.h"
 

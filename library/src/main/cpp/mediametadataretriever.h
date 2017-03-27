@@ -21,7 +21,6 @@
 #define MEDIAMETADATARETRIEVER_H
 
 #include <android/native_window_jni.h>
-#include <Mutex.h>
 #include "Mutex.h"
 
 extern "C" {

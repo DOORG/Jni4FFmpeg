@@ -18,7 +18,7 @@ extern "C"
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 #include <libavutil/opt.h>
-#include <ffmpeg_utils.h>
+#include "ffmpeg_utils.h"
 
 /* Cheat to keep things simple and just use some globals. */
 AVFormatContext *pFormatCtx;
@@ -95,18 +95,6 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_run(JNIEnv *env, jclass type, j
 JNIEXPORT jstring JNICALL
 Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getAvCodec(JNIEnv *env, jclass type) {
 
-//    char buff[1024];
-//    snprintf(buff, sizeof(buff), "ffmpeg -ss 00:00:01 -i %s %s -r 1 -vframes 1 -an -vcodec mjpeg",
-//             "Hello", "world");
-//    std::string buffAsStdStr = buff;
-//
-//
-//    char tab2[1024];
-//    strncpy(tab2, buffAsStdStr.c_str(), sizeof(tab2));
-//    tab2[sizeof(tab2) - 1] = 0;
-//
-//    int resultCode = run(strlen(tab2), (char **) tab2);
-
     return env->NewStringUTF(avcodec_configuration());
 }
 
@@ -118,29 +106,6 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getBitmap(JNIEnv *env, jclass t
     const char *savePath = env->GetStringUTFChars(savePath_, 0);
     LOGD(sourcePath);
     LOGD(savePath);
-
-
-//    char const *str1;
-//    int n = 0;
-//    char *argv[20];
-//    jbyte* str[3];
-//    jstringToCstr(env,videoPath,&str[0]);
-//    jstringToCstr(env,audioPath,&str[1]);
-//    jstringToCstr(env,avPath,&str[2]);
-//
-//    argv[n++] = "ffmpeg";
-//    argv[n++] = "-i";
-//    argv[n++] = str[0];
-//    argv[n++] = "-i";
-//    argv[n++] = str[1];
-//    argv[n++] = "-y";
-//    argv[n++] = "-strict";
-//    argv[n++] = "-2";
-//    argv[n++] = str[2];
-//    int ret = vedio_merge(n, argv);
-//    str1 = "Using FFMPEG doing your job";
-//    return (*env)->NewStringUTF(env, str1);
-
 
     char *argv[30];
     int argc = 0;
@@ -155,62 +120,6 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getBitmap(JNIEnv *env, jclass t
     argv[argc++] = (char *) "image2";
     argv[argc++] = (char *) "-y";
     argv[argc++] = (char *) savePath;
-//    argv[argc++] = (char *) savePath;
-//    argv[argc++] = (char *) "-r";
-//    argv[argc++] = (char *) "-1";
-//    argv[argc++] = (char *) "-vframes";
-//    argv[argc++] = (char *) "1";
-//    argv[argc++] = (char *) "-an";
-//    argv[argc++] = (char *) "-vcodec";
-//    argv[argc++] = (char *) "mjpeg";
-//    argv[n++] = str[0];
-//    argv[n++] = "-i";
-//    argv[n++] = str[1];
-//    argv[n++] = "-y";
-//    argv[n++] = "-strict";
-//    argv[n++] = "-2";
-//    argv[n++] = str[2];
-
-
-    /**
-     *
-     * fun cropBitmapTransparency(sourceBitmap: Bitmap): Bitmap? {
-  var minX = sourceBitmap.width
-  var minY = sourceBitmap.height
-  var maxX = -1
-  var maxY = -1
-  for (y in 0..sourceBitmap.height - 1) {
-    for (x in 0..sourceBitmap.width - 1) {
-      val alpha = sourceBitmap.getPixel(x, y) shr 24 and 255
-      if (alpha > 0) {   // pixel is not 100% transparent
-        if (x < minX) minX = x
-        if (x > maxX) maxX = x
-        if (y < minY) minY = y
-        if (y > maxY) maxY = y
-      }
-    }
-  }
-  if (maxX < minX || maxY < minY) return null // Bitmap is entirely transparent
-  // crop bitmap to non-transparent area and return:
-  return Bitmap.createBitmap(sourceBitmap, minX, minY, maxX - minX + 1, maxY - minY + 1)
-}
-
-     *
-     *
-     */
-
-
-//
-//    char buff[1024];
-//    snprintf(buff, sizeof(buff), "ffmpeg -ss 00:00:01 -i %s %s -r 1 -vframes 1 -an -vcodec mjpeg",
-//             sourcePath, savePath);
-//    std::string buffAsStdStr = buff;
-//
-//    LOGD(buffAsStdStr.c_str());
-//
-//    char tab2[1024];
-//    strncpy(tab2, buffAsStdStr.c_str(), sizeof(tab2));
-//    tab2[sizeof(tab2) - 1] = 0;
 
     int resultCode = run(argc, argv);
     if (resultCode == 0) {

@@ -22,9 +22,9 @@
 
 #include <assert.h>
 #include <android/log.h>
-#include <mediametadataretriever.h>
 #include "jni.h"
 #include "mediametadataretriever.h"
+#include "check_env.h"
 
 // for native window JNI
 #include <android/bitmap.h>
@@ -41,7 +41,7 @@ struct fields_t {
 };
 
 static fields_t fields;
-static const char *const kClassPathName = "wseemann/media/FFmpegMediaMetadataRetriever";
+static const char *const kClassPathName = "work/wanghao/jni4ffmpeg/MediaMetadataRetriever";
 
 static JavaVM *m_vm;
 
@@ -497,6 +497,7 @@ static void wseemann_media_FFmpegMediaMetadataRetriever_native_finalize(JNIEnv *
 }
 
 static void wseemann_media_FFmpegMediaMetadataRetriever_native_init(JNIEnv *env, jobject thiz) {
+    check_env_status();
     __android_log_write(ANDROID_LOG_INFO, LOG_TAG, "native_init");
     jclass clazz = env->FindClass(kClassPathName);
     if (clazz == NULL) {
@@ -551,7 +552,7 @@ static JNINativeMethod nativeMethods[] = {
 // JNI_OnLoad in wseemann_media_FFmpegMediaMetadataRetriever.cpp
 int register_wseemann_media_FFmpegMediaMetadataRetriever(JNIEnv *env) {
     int numMethods = (sizeof(nativeMethods) / sizeof((nativeMethods)[0]));
-    jclass clazz = env->FindClass("wseemann/media/FFmpegMediaMetadataRetriever");
+    jclass clazz = env->FindClass("work/wanghao/jni4ffmpeg/MediaMetadataRetriever");
     jint ret = env->RegisterNatives(clazz, nativeMethods, numMethods);
     env->DeleteLocalRef(clazz);
     return ret;
@@ -570,7 +571,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 
     if (register_wseemann_media_FFmpegMediaMetadataRetriever(env) < 0) {
         __android_log_print(ANDROID_LOG_ERROR, LOG_TAG,
-                            "ERROR: FFmpegMediaMetadataRetriever native registration failed\n");
+                            "ERROR: MediaMetadataRetriever native registration failed\n");
         goto bail;
     }
 

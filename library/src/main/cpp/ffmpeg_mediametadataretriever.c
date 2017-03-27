@@ -21,8 +21,8 @@
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
 #include <libavutil/opt.h>
-#include <ffmpeg_mediametadataretriever.h>
-#include <ffmpeg_utils.h>
+#include "ffmpeg_mediametadataretriever.h"
+#include "ffmpeg_utils.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -183,7 +183,7 @@ int set_data_source_l(State **ps, const char *path) {
 
     AVDictionary *options = NULL;
     av_dict_set(&options, "icy", "1", 0);
-    av_dict_set(&options, "user-agent", "FFmpegMediaMetadataRetriever", 0);
+    av_dict_set(&options, "user-agent", "MediaMetadataRetriever", 0);
 
     if (state->headers) {
         av_dict_set(&options, "headers", state->headers, 0);
