@@ -56,8 +56,7 @@
 
 #if CONFIG_NETWORK
 
-//#include "libavformat/network.h"
-#include "android-log.h"
+#include "libavformat/network.h"
 
 #endif
 #if HAVE_SYS_RESOURCE_H
@@ -126,11 +125,11 @@ void register_exit(void (*cb)(int ret)) {
 }
 
 void exit_program(int ret) {
-    LOGW("Exit FFmpeg with code=%d", ret);
-    return;
     if (program_exit)
         program_exit(ret);
-    exit(ret);
+    av_log(NULL, AV_LOG_FATAL, "Quit at %d", ret);
+    return;
+//    exit(ret);
 }
 
 double parse_number_or_die(const char *context, const char *numstr, int type,
@@ -1068,7 +1067,7 @@ static void print_all_libs_info(int flags, int level) {
     PRINT_LIB_INFO(avformat, AVFORMAT, flags, level);
     PRINT_LIB_INFO(avdevice, AVDEVICE, flags, level);
     PRINT_LIB_INFO(avfilter, AVFILTER, flags, level);
-//    PRINT_LIB_INFO(avresample, AVRESAMPLE, flags, level);
+    PRINT_LIB_INFO(avresample, AVRESAMPLE, flags, level);
     PRINT_LIB_INFO(swscale, SWSCALE, flags, level);
     PRINT_LIB_INFO(swresample, SWRESAMPLE, flags, level);
     PRINT_LIB_INFO(postproc, POSTPROC, flags, level);
@@ -1227,7 +1226,7 @@ static int show_formats_devices(void *optctx, const char *opt, const char *arg, 
                    " .E = Muxing supported\n"
                    " --\n", device_only ? "Devices:" : "File formats:");
     last_name = "000";
-    for (; ;) {
+    for (;;) {
         int decode = 0;
         int encode = 0;
         const char *name = NULL;

@@ -581,13 +581,23 @@ static void ffmpeg_cleanup(int ret) {
     } else if (ret && transcode_init_done) {
         av_log(NULL, AV_LOG_INFO, "Conversion failed!\n");
     }
+
+    if (received_sigterm) {
+        av_log(NULL, AV_LOG_INFO, "Received signal %d: terminating.\n",
+               (int) received_sigterm);
+    } else if (ret && transcode_init_done) {
+        av_log(NULL, AV_LOG_INFO, "Conversion failed!\n");
+    }
+
     term_exit();
-    ffmpeg_exited = 1;
+
     nb_filtergraphs = 0;
     nb_output_files = 0;
     nb_output_streams = 0;
     nb_input_files = 0;
     nb_input_streams = 0;
+
+    ffmpeg_exited = 0;
 }
 
 void remove_avoptions(AVDictionary **a, AVDictionary *b) {
@@ -626,8 +636,8 @@ static void update_benchmark(const char *fmt, ...) {
     }
 }
 
-static void close_all_output_streams(OutputStream *ost, OSTFinished this_stream,
-                                     OSTFinished others) {
+static void
+close_all_output_streams(OutputStream *ost, OSTFinished this_stream, OSTFinished others) {
     int i;
     for (i = 0; i < nb_output_streams; i++) {
         OutputStream *ost2 = output_streams[i];
@@ -696,13 +706,13 @@ static void write_frame(AVFormatContext *s, AVPacket *pkt, OutputStream *ost) {
                                            &new_pkt.data, &new_pkt.size,
                                            pkt->data, pkt->size,
                                            pkt->flags & AV_PKT_FLAG_KEY);
-//        FF_DISABLE_DEPRECATION_WARNINGS
+        FF_DISABLE_DEPRECATION_WARNINGS
         if (a == 0 && new_pkt.data != pkt->data
             #if FF_API_DESTRUCT_PACKET
             && new_pkt.destruct
 #endif
                 ) {
-//            FF_ENABLE_DEPRECATION_WARNINGS
+            FF_ENABLE_DEPRECATION_WARNINGS
             uint8_t *t = av_malloc(new_pkt.size +
                                    AV_INPUT_BUFFER_PADDING_SIZE); //the new should be a subset of the old so cannot overflow
             if (t) {
@@ -4161,11 +4171,13 @@ static int64_t getmaxrss(void) {
 static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl) {
 }
 
-int run(int argc, char **argv) {
-
-    LOGD("运行到此处%d", argc);
+int ffmpeg_main(int argc, char **argv) {
     int ret;
     int64_t ti;
+
+    init_dynload();
+
+
 
     register_exit(ffmpeg_cleanup);
 
@@ -4181,7 +4193,6 @@ int run(int argc, char **argv) {
         argv++;
     }
 
-    LOGD("FFmpeg start init");
     avcodec_register_all();
 #if CONFIG_AVDEVICE
     avdevice_register_all();
@@ -4194,51 +4205,63 @@ int run(int argc, char **argv) {
 
     term_init();
 
-    LOGD("FFmpeg start parse option");
+    av_log(NULL, AV_LOG_WARNING, "\nbefore ffmpeg_parse_options\n");
+
+
     /* parse options and open all input/output files */
     ret = ffmpeg_parse_options(argc, argv);
+
+    av_log(NULL, AV_LOG_WARNING, "\nafter ffmpeg_parse_options\n");
+
     if (ret < 0) {
-        LOGE("FFmpeg parse options err");
+        //        exit_program(1);
+        ffmpeg_cleanup(1);
         return 1;
     }
+    av_log(NULL, AV_LOG_WARNING, "\nbefore nb_output_files\n");
+
 
     if (nb_output_files <= 0 && nb_input_files == 0) {
         show_usage();
-        LOGD("Use -h to get full help or, even better, run 'man %s'\n", program_name);
+        av_log(NULL, AV_LOG_WARNING, "Use -h to get full help or, even better, run 'man %s'\n",
+               program_name);
+        ffmpeg_cleanup(1);
         return 1;
     }
+
+    av_log(NULL, AV_LOG_WARNING, "\nbefore file converter\n");
+
 
     /* file converter / grab */
     if (nb_output_files <= 0) {
-        LOGD("At least one output file must be specified\n");
+        av_log(NULL, AV_LOG_FATAL, "At least one output file must be specified\n");
+        ffmpeg_cleanup(1);
         return 1;
     }
 
-    //     if (nb_input_files == 0) {
-    //         av_log(NULL, AV_LOG_FATAL, "At least one input file must be specified\n");
-    //         exit_program(1);
-    //     }
+    if (nb_input_files == 0) {
+        av_log(NULL, AV_LOG_FATAL, "At least one input file must be specified\n");
+        ffmpeg_cleanup(1);
+        return 1;
+    }
 
     current_time = ti = getutime();
-    LOGD("FFmpeg start transcode");
     if (transcode() < 0) {
-        LOGE("FFmpeg transcode failed");
+        ffmpeg_cleanup(1);
         return 1;
     }
     ti = getutime() - ti;
-    if (do_benchmark) {
-        LOGD("bench: utime=%0.3fs\n", ti / 1000000.0);
-    }
-    LOGD("%"
-                 PRIu64
-                 " frames successfully decoded, %"
-                 PRIu64
-                 " decoding errors\n",
-         decode_error_stat[0], decode_error_stat[1]);
-    if ((decode_error_stat[0] + decode_error_stat[1]) * max_error_rate < decode_error_stat[1])
-        LOGE("log error");
+    av_log(NULL, AV_LOG_FATAL, "Transcode has Finished\n");
 
-    LOGD("FFmpeg start clean");
+    if (do_benchmark) {
+        av_log(NULL, AV_LOG_INFO, "bench: utime=%0.3fs\n", ti / 1000000.0);
+    }
+//    av_log(NULL, AV_LOG_DEBUG, "%"PRIu64" frames successfully decoded, %"PRIu64" decoding errors\n",
+//           decode_error_stat[0], decode_error_stat[1]);
+//    if ((decode_error_stat[0] + decode_error_stat[1]) * max_error_rate < decode_error_stat[1])
+//        exit_program(69);
+//
+//    exit_program(received_nb_signals ? 255 : main_return_code);
     ffmpeg_cleanup(0);
     return main_return_code;
 }

@@ -47,7 +47,6 @@
 #include "libavutil/threadmessage.h"
 
 #include "libswresample/swresample.h"
-#include "android-log.h"
 
 #define VSYNC_AUTO       -1
 #define VSYNC_PASSTHROUGH 0
@@ -558,5 +557,6 @@ int vdpau_init(AVCodecContext *s);
 int dxva2_init(AVCodecContext *s);
 int vda_init(AVCodecContext *s);
 int videotoolbox_init(AVCodecContext *s);
-int run(int argc, char **argv);
+
+int ffmpeg_main(int argc, char **argv);
 #endif /* FFMPEG_H */

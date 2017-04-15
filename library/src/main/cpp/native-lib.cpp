@@ -8,17 +8,19 @@
 
 extern "C"
 {
-#include <libavcodec/avcodec.h>
-#include "ffmpeg.h"
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
 
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
-#include <libavutil/opt.h>
+#include "libavcodec/avcodec.h"
+#include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
+#include "libswscale/swscale.h"
+
+#include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
+#include "libswscale/swscale.h"
+#include "libavutil/opt.h"
 #include "ffmpeg_utils.h"
+#include "ffmpeg.h"
+
 
 /* Cheat to keep things simple and just use some globals. */
 AVFormatContext *pFormatCtx;
@@ -75,25 +77,73 @@ int seek_frame(int tsms) {
 }
 
 
+//Output FFmpeg's av_log()
+void custom_log(void *ptr, int level, const char *fmt, va_list vl) {
+
+    //To TXT file
+
+    FILE *fp = fopen("/storage/emulated/0/av_log.txt", "a+");
+    if (fp) {
+        vfprintf(fp, fmt, vl);
+        fflush(fp);
+        fclose(fp);
+    }
+
+
+    //To Logcat
+    //LOGE(fmt, vl);
+}
+
+
 JNIEXPORT jstring JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_run(JNIEnv *env, jclass type, jint argc,
-                                                     jobjectArray args) {
-
-    char buff[1024];
-    snprintf(buff, sizeof(buff), "ffmpeg -ss 00:00:01 -i %s %s -r 1 -vframes 1 -an -vcodec mjpeg",
-             "Hello", "world");
-    std::string buffAsStdStr = buff;
+Java_work_wanghao_jni4ffmpeg_FFmpegHelper_run(JNIEnv *env, jclass type, jint argc,
+                                              jobjectArray args) {
 
 
-    char tab2[1024];
-    strncpy(tab2, buffAsStdStr.c_str(), sizeof(tab2));
-    tab2[sizeof(tab2) - 1] = 0;
 
-    int resultCode = run(strlen(tab2), (char **) tab2);
+    //FFmpeg av_log() callback
+//    av_log_set_callback(custom_log);
+
+//    int argc = cmdnum;
+    char **argv = (char **) malloc(sizeof(char *) * argc);
+
+    int i = 0;
+    for (i = 0; i < argc; i++) {
+        jstring string = (jstring) env->GetObjectArrayElement(args, i);
+        const char *tmp = env->GetStringUTFChars(string, 0);
+        argv[i] = (char *) malloc(sizeof(char) * 1024);
+        strcpy(argv[i], tmp);
+    }
+
+    ffmpeg_main(argc, argv);
+
+    for (i = 0; i < argc; i++) {
+        free(argv[i]);
+    }
+    free(argv);
+    return 0;
+
+
+//    char buff[1024];
+//    snprintf(buff, sizeof(buff), "ffmpeg -ss 00:00:01 -i %s %s -r 1 -vframes 1 -an -vcodec mjpeg",
+//             "Hello", "world");
+//    std::string buffAsStdStr = buff;
+//
+//
+//    char tab2[1024];
+//    strncpy(tab2, buffAsStdStr.c_str(), sizeof(tab2));
+//    tab2[sizeof(tab2) - 1] = 0;
+//
+//    int resultCode = ffmpeg_main(strlen(tab2), (char **) tab2);
+
+
+
+
+
 }
 
 JNIEXPORT jstring JNICALL
-Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getAvCodec(JNIEnv *env, jclass type) {
+Java_work_wanghao_jni4ffmpeg_FFmpegHelper_getAvCodec(JNIEnv *env, jclass type) {
 
     return env->NewStringUTF(avcodec_configuration());
 }
@@ -121,7 +171,7 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_getBitmap(JNIEnv *env, jclass t
     argv[argc++] = (char *) "-y";
     argv[argc++] = (char *) savePath;
 
-    int resultCode = run(argc, argv);
+    int resultCode = ffmpeg_main(argc, argv);
     if (resultCode == 0) {
         LOGD("返回值为0");
     } else {
@@ -149,6 +199,8 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_openFile(JNIEnv *env, jclass ty
     LOGE("Registered formats");
 //    err = av_open_input_file(&pFormatCtx, "file:/sdcard/vid.3gp", NULL, 0, NULL);
     err = avformat_open_input(&pFormatCtx, path, NULL, NULL);
+
+
     LOGE("Called open file");
     if (err != 0) {
         LOGE("Couldn't open file");
@@ -429,6 +481,7 @@ Java_work_wanghao_jni4ffmpeg_Native4FFmpegHelper_updateBitmap(JNIEnv *env, jclas
             }
         }
     }
+
 
     AndroidBitmap_unlockPixels(env, zBitmap);
 
